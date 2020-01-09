@@ -4,7 +4,7 @@
 Name:           gutenprint
 Summary:        Printer Drivers Package
 Version:        5.2.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 Group:          System Environment/Base
 URL:            http://gimp-print.sourceforge.net/
 Source0:        http://dl.sf.net/gimp-print/gutenprint-%{version}.tar.bz2
@@ -16,6 +16,7 @@ Patch0:         gutenprint-menu.patch
 Patch1:         gutenprint-O6.patch
 Patch2:         gutenprint-selinux.patch
 Patch3:         gutenprint-brother-hl-2040.patch
+Patch4:         gutenprint-yyin.patch
 License:        GPLv2+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  cups-libs >= 1.1.22-0.rc1.9.10, cups >= 1.1.22-0.rc1.9.10 
@@ -147,6 +148,8 @@ Epson, HP and compatible printers.
 %patch2 -p1 -b .selinux
 # Don't claim support for Brother HL-2040.
 %patch3 -p1 -b .brother-hl-2040
+# gutenprint: libgutenprintui2 defines "yyin" symbol (bug #882197)
+%patch4 -p1 -b .yyin
 
 cp %{SOURCE2} src/cups/cups-genppdupdate.in
 
@@ -209,6 +212,7 @@ exit 0
 
 %files -f gutenprint.lang
 %defattr(-, root, root,-)
+%doc COPYING
 %{_bindir}/escputil
 %{_mandir}/man1/escputil.1*
 %{_bindir}/ijsgutenprint.5.2
@@ -275,6 +279,10 @@ fi
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Mon Oct 03 2016 Zdenek Dohnal <zdohnal@redhat.com> - 5.2.5-3
+- gutenprint: libgutenprintui2 defines "yyin" symbol (bug #882197)
+- gutenprint base package must also include a copy of license text (bug #613706)
+
 * Thu Jul  8 2010 Jiri Popelka <jpopelka@redhat.com> 5.2.5-2
 - Don't ship kitload.log in foomatic sub-package (bug #594709).
 
