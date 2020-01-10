@@ -1,0 +1,47 @@
+.\" Copyright (C) 2000 Roger Leigh <rleigh@debian.org>
+.\" Copyright (C) 2014 Red Hat, Inc.
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2, or (at your option)
+.\" any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+.\"
+.\" Based on cups-genppdupdate(8)
+.\"
+.TH GUTENPRINT-FOOMATICPPDUPDATE "8" "05 Aug 2014" "5.2.9" "Gutenprint"
+.SH NAME
+gutenprint-foomaticppdupdate \- update Gutenprint Foomatic PPD files
+.SH SYNOPSIS
+.B gutenprint-foomaticppdupdate VERSION
+.SH DESCRIPTION
+\fBgutenprint\-foomaticppdupdate\fP regenerates the \fIGutenprint\fP
+Foomatic PPD files in use by CUPS, using freshly generated Foomatic
+PPD files as templates. The new PPD file replaces the old PPD file
+under \fI/etc/cups/ppd\fP, but all the options set in the old PPD will
+be merged into the new PPD, provided that they are still valid in the
+new file.
+.PP
+\fBgutenprint\-foomaticppdupdate\fP does \fBnot\fP restart cupsd.
+cupsd will need manual reloading (or send SIGHUP) once
+\fBgutenprint\-foomaticppdupdate\fP has completed.
+.PP
+This is not intended to be used directly but instead is run
+automatically on package upgrade.
+.SH OPTIONS
+.B VERSION
+The version number of the Gutenprint package just installed.
+.SH SEE ALSO
+.BR cups\-genppdupdate (8)
+.PP
+This program is free software; you can redistribute it and/or modify
+it under the terms fo the GNU General Public License, version 2, or
+(at your option) any later version.

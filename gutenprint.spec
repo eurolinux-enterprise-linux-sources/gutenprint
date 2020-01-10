@@ -3,14 +3,15 @@
 Name:           gutenprint
 Summary:        Printer Drivers Package
 Version:        5.2.9
-Release:        15%{?dist}
+Release:        18%{?dist}
 Group:          System Environment/Base
 URL:            http://gimp-print.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/gimp-print/%{name}-%{version}.tar.bz2
 # Post-install script to update foomatic PPDs.
 Source1:        gutenprint-foomaticppdupdate
+Source2:        gutenprint-foomaticppdupdate.8
 # Post-install script to update CUPS native PPDs.
-Source2:        cups-genppdupdate.py.in
+Source3:        cups-genppdupdate.py.in
 Patch0:         gutenprint-menu.patch
 Patch1:         gutenprint-O6.patch
 Patch2:         gutenprint-selinux.patch
@@ -195,7 +196,7 @@ Epson, HP and compatible printers.
 # Fix the test suite.
 %patch8 -p1 -b .test-suite
 
-cp %{SOURCE2} src/cups/cups-genppdupdate.in
+cp %{SOURCE3} src/cups/cups-genppdupdate.in
 
 %build
 # autoreconf has been added due to bug #925535,
@@ -225,6 +226,7 @@ make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sbindir}
 install -m755 %{SOURCE1} %{buildroot}%{_sbindir}
+install -m644 %{SOURCE2} %{buildroot}%{_mandir}/man8
 
 rm -rf %{buildroot}%{_datadir}/gutenprint/doc
 rm -f %{buildroot}%{_datadir}/foomatic/kitload.log
@@ -234,9 +236,12 @@ rm -f %{buildroot}%{_sysconfdir}/cups/command.types
 %find_lang %{name} --all-name
 
 %if %{build_with_ijs_support}
+echo .so man1/ijsgutenprint.1 > %{buildroot}%{_mandir}/man1/ijsgutenprint.5.2.1
 %else
 rm -f %{buildroot}%{_mandir}/man1/ijsgutenprint.1*
 %endif
+
+echo .so man8/cups-genppd.8 > %{buildroot}%{_mandir}/man8/cups-genppd.5.2.8
 
 # Fix up rpath.  If you can find a way to do this without resorting
 # to chrpath, please let me know!
@@ -268,6 +273,7 @@ exit 0
 %{_mandir}/man1/escputil.1*
 %{_bindir}/ijsgutenprint.5.2
 %if %{build_with_ijs_support}
+%{_mandir}/man1/ijsgutenprint.5.2.1*
 %{_mandir}/man1/ijsgutenprint.1*
 %endif
 %{_datadir}/gutenprint
@@ -296,6 +302,7 @@ exit 0
 %files foomatic
 %doc 
 %{_sbindir}/gutenprint-foomaticppdupdate
+%{_mandir}/man8/gutenprint-foomaticppdupdate.8*
 %{_datadir}/foomatic/db/source/driver/*
 %{_datadir}/foomatic/db/source/opt/*
 
@@ -324,6 +331,17 @@ fi
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Thu Aug  7 2014 Tim Waugh <twaugh@redhat.com> - 5.2.9-18
+- Rebuilt.
+
+* Tue Aug  5 2014 Tim Waugh <twaugh@redhat.com> - 5.2.9-17
+- More fixes for bug #948967:
+  - Supply man page for gutenprint-foomaticupdate.
+  - Link to cups-genppd(8) man page from cups-genppd.5.2(8).
+
+* Mon Aug  4 2014 Tim Waugh <twaugh@redhat.com> - 5.2.9-16
+- Link to ijsgutenprint(1) man page from ijsgutenprint.5.2(1) (bug #948967).
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 5.2.9-15
 - Mass rebuild 2014-01-24
 
