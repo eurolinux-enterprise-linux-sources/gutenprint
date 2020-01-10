@@ -3,7 +3,7 @@
 Name:           gutenprint
 Summary:        Printer Drivers Package
 Version:        5.2.9
-Release:        13%{?dist}
+Release:        15%{?dist}
 Group:          System Environment/Base
 URL:            http://gimp-print.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/gimp-print/%{name}-%{version}.tar.bz2
@@ -324,6 +324,12 @@ fi
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 5.2.9-15
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 5.2.9-14
+- Mass rebuild 2013-12-27
+
 * Tue Jul 16 2013 Tim Waugh <twaugh@redhat.com> - 5.2.9-13
 - Run test suite.
 
